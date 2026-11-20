@@ -1,0 +1,6 @@
+.env
+auth.sqlite
+auth.sqlite-shm
+auth.sqlite-wal
+node_modules/
+insomnia-collection.json

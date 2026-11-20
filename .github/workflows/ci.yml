@@ -1,0 +1,80 @@
+name: CI/CD
+
+on:
+    push:
+        branches:
+            - dev
+            - master
+
+jobs:
+    dev:
+        if: github.ref == 'refs/heads/dev'
+        runs-on: self-hosted
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22"
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run unit tests
+              run: npm run test:unit
+
+            - name: Deploy test environment
+              run: |
+                  cd /var/www/jwt-staging
+                  git pull --ff-only origin dev
+                  npm ci
+                  if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
+                    kill "$(cat app.pid)"
+                    sleep 2
+                  fi
+                  nohup node server.js > app.log 2>&1 &
+                  echo $! > app.pid
+                  sleep 2
+                  kill -0 "$(cat app.pid)"
+
+    production:
+        if: github.ref == 'refs/heads/master'
+        runs-on: self-hosted
+        environment: production
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "22"
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run unit tests
+              run: npm run test:unit
+
+            - name: Run integration tests
+              run: npm run test:integration
+
+            - name: Deploy production
+              run: |
+                  cd /var/www/jwt-production
+                  git pull --ff-only origin master
+                  npm ci
+                  if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
+                    kill "$(cat app.pid)"
+                    sleep 2
+                  fi
+                  nohup node server.js > app.log 2>&1 &
+                  echo $! > app.pid
+                  sleep 2
+                  kill -0 "$(cat app.pid)"
