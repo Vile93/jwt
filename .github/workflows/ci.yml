@@ -29,7 +29,7 @@ jobs:
 
             - name: Deploy test environment
               run: |
-                  cd /var/www/jwt-staging
+                  cd /var/www/jwt-staging/jwt
                   git pull --ff-only origin dev
                   npm ci
                   if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
@@ -67,7 +67,7 @@ jobs:
 
             - name: Deploy production
               run: |
-                  cd /var/www/jwt-production
+                  cd /var/www/jwt-production/jwt
                   git pull --ff-only origin master
                   npm ci
                   if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
