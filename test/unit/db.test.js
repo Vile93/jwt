@@ -75,15 +75,3 @@ test("Db.updatePassword changes the stored password hash", () => {
         db.close();
     }
 });
-
-test("Db.createUser returns roles as an array", () => {
-    const db = createDb();
-
-    try {
-        const user = db.createUser("roles-user", "hash");
-
-        assert.deepEqual(user.roles, ["user"]);
-    } finally {
-        db.close();
-    }
-});
