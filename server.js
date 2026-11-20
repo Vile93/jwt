@@ -152,6 +152,9 @@ function requireString(value, field) {
     return value.trim();
 }
 
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok 123" });
+});
 app.post("/auth/register", (req, res, next) => {
     try {
         const name = requireString(req.body.name, "name");
