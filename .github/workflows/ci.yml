@@ -30,6 +30,7 @@ jobs:
             - name: Deploy test environment
               run: |
                   cd /var/www/jwt-staging/jwt
+                  git config --global --add safe.directory /var/www/jwt-staging/jwt/jwt
                   git pull --ff-only origin dev
                   npm ci
                   if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
@@ -68,6 +69,7 @@ jobs:
             - name: Deploy production
               run: |
                   cd /var/www/jwt-production/jwt
+                  git config --global --add safe.directory /var/www/jwt-production/jwt/jwt
                   git pull --ff-only origin master
                   npm ci
                   if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
