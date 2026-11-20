@@ -5,7 +5,6 @@ on:
         branches:
             - dev
             - master
-
 jobs:
     dev:
         if: github.ref == 'refs/heads/dev'
@@ -29,19 +28,26 @@ jobs:
 
             - name: Deploy test environment
               run: |
-                  cd /var/www/jwt-staging/jwt
-                  git config --global --add safe.directory /var/www/jwt-staging/jwt/jwt
-                  git pull --ff-only origin dev
-                  npm ci
+                  rsync -av --delete \
+                    --exclude='.git' \
+                    --exclude='node_modules' \
+                    --exclude='.env' \
+                    --exclude='app.pid' \
+                    --exclude='app.log' \
+                    ./ /var/www/jwt-staging/
+
+                  cd /var/www/jwt-staging
+                  npm ci --omit=dev
+
                   if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
                     kill "$(cat app.pid)"
                     sleep 2
                   fi
+
                   nohup node server.js > app.log 2>&1 &
                   echo $! > app.pid
                   sleep 2
                   kill -0 "$(cat app.pid)"
-
     production:
         if: github.ref == 'refs/heads/master'
         runs-on: self-hosted
@@ -68,14 +74,22 @@ jobs:
 
             - name: Deploy production
               run: |
-                  cd /var/www/jwt-production/jwt
-                  git config --global --add safe.directory /var/www/jwt-production/jwt/jwt
-                  git pull --ff-only origin master
-                  npm ci
+                  rsync -av --delete \
+                    --exclude='.git' \
+                    --exclude='node_modules' \
+                    --exclude='.env' \
+                    --exclude='app.pid' \
+                    --exclude='app.log' \
+                    ./ /var/www/jwt-production/
+
+                  cd /var/www/jwt-production
+                  npm ci --omit=dev
+
                   if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
                     kill "$(cat app.pid)"
                     sleep 2
                   fi
+
                   nohup node server.js > app.log 2>&1 &
                   echo $! > app.pid
                   sleep 2
