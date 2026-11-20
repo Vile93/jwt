@@ -48,7 +48,6 @@ jobs:
                   echo $! > app.pid
                   sleep 2
                   kill -0 "$(cat app.pid)"
-
     production:
         if: github.ref == 'refs/heads/master'
         runs-on: self-hosted
