@@ -80,6 +80,7 @@ jobs:
                     --exclude='.env' \
                     --exclude='app.pid' \
                     --exclude='app.log' \
+                    --exclude='*.sqlite*' \
                     ./ /var/www/jwt-production/
 
                   cd /var/www/jwt-production
