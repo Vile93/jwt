@@ -34,7 +34,8 @@ jobs:
                     --exclude='.env' \
                     --exclude='app.pid' \
                     --exclude='app.log' \
-                    ./ /var/www/jwt-staging/
+                    --exclude='*.sqlite*' \
+                    ./ /var/www/jwt-production/
 
                   cd /var/www/jwt-staging
                   npm ci --omit=dev
