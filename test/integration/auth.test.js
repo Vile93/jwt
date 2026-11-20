@@ -164,3 +164,7 @@ test("password change succeeds and revokes refresh sessions", async () => {
     });
     assert.equal(login.status, 200);
 });
+
+test("failed test", () => {
+    assert.equal(1, 2);
+});
