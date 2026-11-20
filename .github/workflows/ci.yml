@@ -93,7 +93,7 @@ jobs:
                     sleep 2
                   fi
 
-                  nohup node server.js > app.log 2>&1 &
+                  RUNNER_TRACKING_ID="" setsid node server.js > app.log 2>&1 < /dev/null &
                   echo $! > app.pid
                   sleep 2
                   kill -0 "$(cat app.pid)"
