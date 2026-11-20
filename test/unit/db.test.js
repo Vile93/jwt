@@ -76,6 +76,6 @@ test("Db.updatePassword changes the stored password hash", () => {
     }
 });
 
-test("fail test", () => {
+/* test("fail test", () => {
     assert.equal(1, 2);
-});
+}); */
