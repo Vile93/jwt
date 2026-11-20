@@ -29,13 +29,22 @@ jobs:
 
             - name: Deploy test environment
               run: |
+                  rsync -av --delete \
+                    --exclude='.git' \
+                    --exclude='node_modules' \
+                    --exclude='.env' \
+                    --exclude='app.pid' \
+                    --exclude='app.log' \
+                    ./ /var/www/jwt-staging/
+
                   cd /var/www/jwt-staging
-                  git pull --ff-only origin dev
-                  npm ci
+                  npm ci --omit=dev
+
                   if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
                     kill "$(cat app.pid)"
                     sleep 2
                   fi
+
                   nohup node server.js > app.log 2>&1 &
                   echo $! > app.pid
                   sleep 2
@@ -67,13 +76,22 @@ jobs:
 
             - name: Deploy production
               run: |
+                  rsync -av --delete \
+                    --exclude='.git' \
+                    --exclude='node_modules' \
+                    --exclude='.env' \
+                    --exclude='app.pid' \
+                    --exclude='app.log' \
+                    ./ /var/www/jwt-production/
+
                   cd /var/www/jwt-production
-                  git pull --ff-only origin master
-                  npm ci
+                  npm ci --omit=dev
+
                   if [ -f app.pid ] && kill -0 "$(cat app.pid)" 2>/dev/null; then
                     kill "$(cat app.pid)"
                     sleep 2
                   fi
+
                   nohup node server.js > app.log 2>&1 &
                   echo $! > app.pid
                   sleep 2
