@@ -153,7 +153,7 @@ function requireString(value, field) {
 }
 
 app.get("/health", (req, res) => {
-    res.status(200).json({ status: "ok" });
+    res.status(200).json({ status: "ok 123" });
 });
 app.post("/auth/register", (req, res, next) => {
     try {
