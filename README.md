@@ -22,14 +22,14 @@ DATABASE_FILE=./auth.sqlite
 
 ## Эндпоинты
 
-| Метод | URL | Назначение |
-|---|---|---|
-| `POST` | `/auth/register` | Регистрация |
-| `POST` | `/auth/login` | Вход |
-| `POST` | `/auth/refresh` | Обновление токенов |
-| `POST` | `/auth/logout` | Выход |
-| `POST` | `/auth/change-password` | Смена пароля |
-| `GET` | `/me` | Защищённый профиль |
+| Метод  | URL                     | Назначение         |
+| ------ | ----------------------- | ------------------ |
+| `POST` | `/auth/register`        | Регистрация        |
+| `POST` | `/auth/login`           | Вход               |
+| `POST` | `/auth/refresh`         | Обновление токенов |
+| `POST` | `/auth/logout`          | Выход              |
+| `POST` | `/auth/change-password` | Смена пароля       |
+| `GET`  | `/me`                   | Защищённый профиль |
 
 После входа сервер устанавливает два `httpOnly` cookie:
 
@@ -50,8 +50,8 @@ Content-Type: application/json
 
 ```json
 {
-  "name": "alice",
-  "password": "password123"
+    "name": "alice",
+    "password": "password123"
 }
 ```
 
@@ -64,8 +64,8 @@ Content-Type: application/json
 
 ```json
 {
-  "name": "alice",
-  "password": "password123"
+    "name": "alice",
+    "password": "password123"
 }
 ```
 
@@ -96,8 +96,8 @@ Content-Type: application/json
 
 ```json
 {
-  "currentPassword": "password123",
-  "newPassword": "new-password123"
+    "currentPassword": "password123",
+    "newPassword": "new-password123"
 }
 ```
 
